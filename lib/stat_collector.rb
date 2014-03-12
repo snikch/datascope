@@ -3,6 +3,8 @@ require 'json'
 DB = Sequel.connect ENV['DATABASE_URL']
 TARGET_DB = Sequel.connect ENV['TARGET_DB']
 
+Sequel.extension :core_extensions
+
 module StatCollector
   extend self
 
