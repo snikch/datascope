@@ -56,10 +56,9 @@ class Datascope < Sinatra::Base
   end
 
   get '/queries' do
-    data = JSON.parse DB[:stats]
-                        .select(:data)
-                        .order_by(:id.desc)
-                        .first[:data]
+    stats = DB[:stats].select(:data).reverse_order(:id)
+    return JSON.dump([]) unless stats.first
+    data = JSON.parse stats.first[:data]
     JSON.dump data['stat_statements'].map{|s| s['query'] = s['query'][0..50]; s}.sort{|s| s['total_time']}.reverse
   end
 

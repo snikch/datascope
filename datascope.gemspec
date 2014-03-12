@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = "datascope"
-  gem.version       = "0.0.4"
+  gem.version       = "0.0.5"
   gem.authors       = ["Will Leinweber"]
   gem.email         = []
   gem.description   = %q{postgres 9.2 visibility}
