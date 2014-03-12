@@ -1,10 +1,10 @@
-require 'sinatra'
+require 'sinatra/base'
 require 'sequel'
 require 'json'
 require 'haml'
 DB = Sequel.connect ENV['DATABASE_URL']
 
-class Datascope < Sinatra::Application
+class Datascope < Sinatra::Base
 
   if (ENV['BASIC_AUTH_USER'] && ENV['BASIC_AUTH_PASSWORD'])
     use Rack::Auth::Basic, "Datascope" do |username, password|
