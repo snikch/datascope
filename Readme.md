@@ -1,3 +1,51 @@
+## Fork Notes
+This is a modified fork of Datascope. This fork can be used as a rack app mounted inside another app, such as a Rails app. If you've got a devops app that you want to include Datascope in, this is your best bet.
+
+### Install
+
+Add `gem 'datascope'` to your app's `Gemfile`. That points to this fork.
+
+Mount `Datascope` like you would any rack app. Here's a rails example
+
+
+```ruby
+#routes.rb
+require 'datascope'
+mount Datascope => '/db'
+```
+
+### Worker
+
+You can run the required worker via `bundle exec datascope_worker`. This will loop forever.
+
+### Heroku Free Setup
+
+If you want to run this on Heroku, including worker, for free, do this.
+
+* Install unicorn (`gem 'unicorn'`)
+* Tell heroku to use unicorn (`web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb` in your `Procfile`)
+* In the `before_fork` for unicorn, create a thread running the worker
+
+
+```ruby
+#config/unicorn.rb
+…
+before_fork do |server, worker|
+  @worker_pid ||= spawn("bundle exec datascope_worker")
+  t = Thread.new {
+    Process.wait(@worker_pid)
+    puts "Worker died. Killing a unicorn."
+    Process.kill 'QUIT', Process.pid
+  }
+end
+…
+```
+
+Boom. You're set up.
+
+For more information on unicorn & heroku, see [https://devcenter.heroku.com/articles/rails-unicorn](https://devcenter.heroku.com/articles/rails-unicorn)
+
+
 # Datascope
 Visability into your Postgres 9.2 database via [pg_stat_statements](http://www.postgresql.org/docs/9.2/static/pgstatstatements.html) and [cubism](http://square.github.com/cubism/) and using the [json datatype](http://wiki.postgresql.org/wiki/What's_new_in_PostgreSQL_9.2#JSON_datatype).
 
