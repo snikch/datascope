@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'rack/coffee'
 require 'sequel'
 require 'json'
 require 'haml'
@@ -11,6 +12,12 @@ class Datascope < Sinatra::Base
       username == ENV['BASIC_AUTH_USER'] && password == ENV['BASIC_AUTH_PASSWORD']
     end
   end
+
+  set :root, File.expand_path(File.dirname(__FILE__) + "/../")
+  set :public_folder, Proc.new { "#{root}/public" }
+  set :views, Proc.new { "#{root}/views" }
+
+  use Rack::Coffee, :root => root
 
   get '/' do
     haml :index

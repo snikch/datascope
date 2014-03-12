@@ -4,7 +4,7 @@ context = cubism.context()
 
 getThing = (name, selector) ->
   context.metric( (start,stop,step,callback)->
-    url = "/metric?selector=#{selector}&start=#{start.toISOString()}&stop=#{stop.toISOString()}&step=#{step}"
+    url = "metric?selector=#{selector}&start=#{start.toISOString()}&stop=#{stop.toISOString()}&step=#{step}"
     d3.json url, (data) ->
       return callback(new Error('could not load data')) unless data
       callback(null, data)
@@ -13,7 +13,7 @@ getThing = (name, selector) ->
 
 
 
-$.getJSON('/queries', (data) ->
+$.getJSON('queries', (data) ->
   console.log(data)
   $ -> _.each(data, (it) -> $('#queries').append("<li><em>#{it.calls}c, #{it.total_time}ms</em> #{it.query}</li>"))
 )
