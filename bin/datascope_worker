@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require './lib/stat_collector'
+require './../lib/stat_collector'
 
 loop do
   puts StatCollector.capture_stats!
